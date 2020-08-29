@@ -9,4 +9,5 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true
 
   # Relations
+  has_many :images
 end

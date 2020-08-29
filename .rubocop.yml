@@ -5,3 +5,7 @@ require:
     - rubocop-rspec
 inherit_gem:
     rubocop-shopify: rubocop.yml
+
+AllCops:
+    Exclude:
+        - 'db/migrate/20200829032052_create_image_tags.rb'
