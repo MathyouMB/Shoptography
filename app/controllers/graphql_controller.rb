@@ -4,10 +4,7 @@ class GraphqlController < ApplicationController
     variables = ensure_hash(params[:variables])
     query = params[:query]
     operation_name = params[:operationName]
-    context = {
-      # Query context goes here, for example:
-      # current_user: current_user,
-    }
+    context = { current_user: current_user }
     result = ImageRepositorySchema.execute(query, variables: variables, context: context, operation_name: operation_name)
     render(json: result)
   rescue => e
@@ -17,6 +14,15 @@ class GraphqlController < ApplicationController
   end
 
   private
+
+  def current_user
+    header = request.headers[:Authentication]
+    decrypted = JWT.decode(header, Rails.application.secrets.secret_key_base.byteslice(0..31))[0] # decrypt token using secret key
+    user = User.find_by(id: decrypted['id']) # find the user given the decrypted id
+    user
+  rescue JWT::DecodeError
+    nil
+  end
 
   # Handle form data, JSON body, or a blank value
   def ensure_hash(ambiguous_param)
