@@ -1,16 +1,30 @@
 # The GraphQL Controller
 class GraphqlController < ApplicationController
   def execute
-    variables = ensure_hash(params[:variables])
-    query = params[:query]
-    operation_name = params[:operationName]
-    context = { current_user: current_user }
-    result = ImageRepositorySchema.execute(query, variables: variables, context: context, operation_name: operation_name)
-    render(json: result)
-  rescue => e
-    raise e unless Rails.env.development?
+    context = {
+      current_user: current_user,
+    }
 
-    handle_error_in_development(e)
+    result = if params[:_json]
+      queries = params[:_json].map do |param|
+        {
+          query: param[:query],
+          operation_name: param[:operationName],
+          variables: ensure_hash(param[:variables]),
+          context: context,
+        }
+      end
+      ImageRepositorySchema.multiplex(queries)
+    else
+      ImageRepositorySchema.execute(
+        params[:query],
+        operation_name: params[:operationName],
+        variables: ensure_hash(params[:variables]),
+        context: context
+      )
+    end
+
+    render(json: result)
   end
 
   private
