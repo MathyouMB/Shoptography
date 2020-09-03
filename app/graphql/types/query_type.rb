@@ -4,5 +4,6 @@ module Types
     field :profile, resolver: Queries::Profile
     field :user, resolver: Queries::User
     field :users, resolver: Queries::Users
+    field :tags, resolver: Queries::Tags
   end
 end
