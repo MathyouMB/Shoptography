@@ -13,4 +13,11 @@ class Image < ApplicationRecord
     Rails.application.routes.url_helpers
       .rails_blob_url(attached_image, only_path: true)
   end
+
+  def search_string
+    Rails.cache.fetch([cache_key, __method__]) do
+      s = title + ' ' + description + ' '
+      s + tags.map(&:name).join(', ')
+    end
+  end
 end

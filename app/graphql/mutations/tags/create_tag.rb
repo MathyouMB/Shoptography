@@ -1,5 +1,5 @@
 module Mutations
-  module Images
+  module Tags
     # Mutation creates a Tag
     class CreateTag < BaseMutation
       argument :name, String, required: true

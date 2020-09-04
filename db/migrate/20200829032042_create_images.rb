@@ -4,6 +4,7 @@ class CreateImages < ActiveRecord::Migration[6.0]
     create_table :images do |t|
       t.string(:title)
       t.text(:description)
+      t.float(:price)
 
       t.timestamps
     end

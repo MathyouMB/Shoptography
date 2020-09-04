@@ -47,6 +47,7 @@ ActiveRecord::Schema.define(version: 2020_08_29_040646) do
   create_table 'images', force: :cascade do |t|
     t.string('title')
     t.text('description')
+    t.float('price')
     t.datetime('created_at', precision: 6, null: false)
     t.datetime('updated_at', precision: 6, null: false)
     t.bigint('user_id')
@@ -64,6 +65,7 @@ ActiveRecord::Schema.define(version: 2020_08_29_040646) do
     t.string('last_name', null: false)
     t.string('email', null: false)
     t.string('password_digest', null: false)
+    t.float('balance', null: false)
     t.datetime('created_at', precision: 6, null: false)
     t.datetime('updated_at', precision: 6, null: false)
     t.index(['email'], name: 'index_users_on_email', unique: true)
