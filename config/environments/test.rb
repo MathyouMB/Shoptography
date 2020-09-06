@@ -46,7 +46,7 @@ Rails.application.configure do
 
   config.active_record.cache_versioning = false
   config.cache_store = :redis_store, {
-    host: 'redis',
+    host: 'localhost',
     port: 6379,
     db: 0,
     namespace: 'cache',

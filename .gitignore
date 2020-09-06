@@ -28,6 +28,4 @@
 
 # Ignore project notes
 /notes.txt/
-docker-compose.yml
-dockerfile
 /coverage
