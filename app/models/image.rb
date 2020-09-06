@@ -2,7 +2,7 @@
 class Image < ApplicationRecord
   # Relations
   belongs_to :user
-  has_many :image_tags, :dependent => :delete_all
+  has_many :image_tags, dependent: :delete_all
   has_many :tags, through: :image_tags
 
   # Active Storage

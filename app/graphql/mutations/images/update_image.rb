@@ -3,9 +3,9 @@ module Mutations
     # Mutation updates the image of the provided id
     class UpdateImage < BaseMutation
       argument :id, Int, required: true
-      argument :title, String, required: true
-      argument :description, String, required: true
-      argument :image, Types::File, required: true
+      argument :title, String, required: false
+      argument :description, String, required: false
+      argument :image, Types::File, required: false
 
       type Types::ImageType
 
@@ -13,19 +13,19 @@ module Mutations
         user = context[:current_user]
         return GraphQL::ExecutionError.new('ERROR: Not logged in or missing token') if user.nil?
 
-        image = Image.find_by(id: id)
+        image_search = Image.find_by(id: id)
 
-        if image.present?
-          if image.user == user
+        if image_search.present?
+          if image_search.user == user
 
-            image.title = title if title.present?
-            image.description = description if description.present?
-            image.attached_image = image if image.present?
-            image.save
+            image_search.title = title if title.present?
+            image_search.description = description if description.present?
+            image_search.attached_image = image if image.present?
+            image_search.save
 
-            raise GraphQL::ExecutionError, image.errors.full_messages.join(', ') unless image.errors.empty?
+            raise GraphQL::ExecutionError, image_search.errors.full_messages.join(', ') unless image_search.errors.empty?
 
-            image
+            image_search
           else
             raise GraphQL::ExecutionError, 'ERROR: Current User is not the creator of this Image'
           end
