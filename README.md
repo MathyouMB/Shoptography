@@ -3,6 +3,7 @@ The Following project is my Shopify Winter 2021 Developer Challenge Submission. 
 ## Table of Contents
 - [Introduction](#introduction)
 - [Setup](#setup)
+- [Docker Setup](#docker-setup)
 - [Operations](#operations)
   - [Queries](#queries)
   - [Mutations](#mutations)
@@ -20,7 +21,7 @@ For my solution to the Developer Intern Challenge, I have created an API for a t
 
 [ RAILS + GraphQL + Postgres + Redis + Docker]
 
-To setup and configure this application you can either configure it manually or use the provided dockerfile and `docker-compose.yml`.
+To setup and configure this application you can either install the various dependencies as described below or use the provided dockerfile and `docker-compose.yml`. If you plan to use the Docker, ship to [Docker Setup](#docker-setup)
 
 This project was built using Ruby on Rails and will require you to have [Ruby 2.6.3](#https://www.ruby-lang.org/en/news/2019/04/17/ruby-2-6-3-released/) and [Ruby on Rails 6.0.3.2](#https://weblog.rubyonrails.org/2020/6/17/Rails-6-0-3-2-has-been-released/). Additionally you will need PostgreSQL and Redis installed.
 
@@ -56,10 +57,22 @@ After you've properly configured PostgreSQL and Redis run the following commands
 - run `bundle` to install all ruby gems related to the project
 - run `rake db:migrate` and `rake db:seed` to migrate the database and seed it with data
 - run `rails s` or `rails server`
-- Go to `localhost:3000` and you should see 
+- View `localhost:3000` and you should see 
 
 
 [ RAILS Success Screen ]
 
+## Docker Setup
 
+If you would like to run this app using the provided provided dockerfile and `docker-compose.yml`, verify that the host, username, and password in `config/database.yml` match the information found in `docker-compose.yml` and that the host of the `redis_store` in `config/environments/development.rb` is titled 'redis'. The host name in `config/database.yml` should match the name of the postgres container ('db') and the host name of the redis_store should match the name of the redis container ('redis').
+
+```ruby
+db:
+    image: postgres:12-alpine
+    environment: 
+        POSTGRES_USER: YOUR_USERNAME
+        POSTGRES_PASSWORD: YOUR_PASSWORD
+    networks:
+        - imagerepo
+```
 
