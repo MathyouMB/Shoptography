@@ -6,7 +6,9 @@ module Types
     field :sign_up, mutation: Mutations::Users::SignUp, description: 'Creates a new User using the provided info'
 
     # Image
-    field :upload_image, mutation: Mutations::Images::UploadImage, description: 'Creates an Image Entity using the provided information'
+    field :create_image, mutation: Mutations::Images::CreateImage, description: 'Creates an Image Entity using the provided information'
+    field :update_image, mutation: Mutations::Images::UpdateImage, description: 'Updates the Image of the provided id'
+    field :delete_image, mutation: Mutations::Images::DeleteImage, description: 'Deletes the Image of the provided id'
     field :add_image_tag_by_id, mutation: Mutations::Images::AddImageTagById, description: 'Adds a Tag to a given Image using the provided tag id'
     field :add_image_tag, mutation: Mutations::Images::AddImageTag, description: 'Adds a Tag to a given Image using the provided tag name'
 

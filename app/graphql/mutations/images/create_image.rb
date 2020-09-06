@@ -1,7 +1,7 @@
 module Mutations
   module Images
-    # Mutation that logs in a user and returns a JWT Token
-    class UploadImage < BaseMutation
+    # Mutation that creates an Image entity with the provided information
+    class CreateImage < BaseMutation
       argument :title, String, required: true
       argument :description, String, required: true
       argument :image, Types::File, required: true
