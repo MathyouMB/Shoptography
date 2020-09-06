@@ -4,7 +4,7 @@ module Mutations
     class CreateImage < BaseMutation
       argument :title, String, required: true
       argument :description, String, required: true
-      argument :price, float, required: true
+      argument :price, Float, required: true
       argument :private, Boolean, required: true
       argument :image, Types::File, required: true
 

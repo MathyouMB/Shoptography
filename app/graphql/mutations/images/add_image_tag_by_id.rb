@@ -23,7 +23,7 @@ module Mutations
           GraphQL::ExecutionError.new('ERROR: Image already has this tag')
         end
 
-        "Succesfully added tag to image."
+        'Succesfully added tag to image.'
       end
     end
   end

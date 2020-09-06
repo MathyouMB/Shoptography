@@ -2,6 +2,7 @@
 module Types
   # The ImageType is the GraphQL type for the Image model
   class ImageType < Types::BaseObject
+    description 'A type that represents a single Image entity.'
     field :id, ID, null: false
     field :title, String, null: false
     field :description, String, null: false

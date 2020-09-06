@@ -2,6 +2,7 @@
 module Types
   # The UserType is the GraphQL type for the User model
   class UserType < Types::BaseObject
+    description 'A user represents someone that may interact with this API.'
     field :id, ID, null: false
     field :firstName, String, null: false
     field :lastName, String, null: false

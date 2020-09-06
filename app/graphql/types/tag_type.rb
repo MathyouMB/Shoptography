@@ -2,6 +2,7 @@
 module Types
   # The TagType is the GraphQL type for the Tag model
   class TagType < Types::BaseObject
+    description 'A type that represents a single Tag entity.'
     field :id, ID, null: false
     field :name, String, null: false
     field :images, [Types::ImageType], null: false

@@ -2,6 +2,7 @@
 module Types
   # The PurchaseType is the GraphQL type for the Purchase model
   class PurchaseType < Types::BaseObject
+    description 'A type that represents a single Purchase entity.'
     field :id, ID, null: false
     field :title, String, null: false
     field :description, String, null: false
