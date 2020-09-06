@@ -6,8 +6,10 @@ class User < ApplicationRecord
   # Validations
   validates :first_name, presence: true
   validates :last_name, presence: true
+  validates :balance, presence: true
   validates :email, presence: true, uniqueness: true
 
   # Relations
   has_many :images
+  has_many :purchases
 end

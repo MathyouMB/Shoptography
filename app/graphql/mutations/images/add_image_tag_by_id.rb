@@ -5,7 +5,7 @@ module Mutations
       argument :image_id, Int, required: true
       argument :tag_id, Int, required: true
 
-      type Boolean
+      type String
 
       def resolve(image_id: nil, tag_id: nil)
         user = context[:current_user]
@@ -22,6 +22,8 @@ module Mutations
         else
           GraphQL::ExecutionError.new('ERROR: Image already has this tag')
         end
+
+        "Succesfully added tag to image."
       end
     end
   end

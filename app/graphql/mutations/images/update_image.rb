@@ -5,11 +5,12 @@ module Mutations
       argument :id, Int, required: true
       argument :title, String, required: false
       argument :description, String, required: false
+      argument :private, Boolean, required: false
       argument :image, Types::File, required: false
 
       type Types::ImageType
 
-      def resolve(id:, title:, description:, image:)
+      def resolve(id:, title: nil, description: nil, private: nil, image: nil)
         user = context[:current_user]
         return GraphQL::ExecutionError.new('ERROR: Not logged in or missing token') if user.nil?
 
@@ -20,6 +21,7 @@ module Mutations
 
             image_search.title = title if title.present?
             image_search.description = description if description.present?
+            image_search.private = private if private.present?
             image_search.attached_image = image if image.present?
             image_search.save
 

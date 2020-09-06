@@ -4,6 +4,7 @@ module Types
     # User
     field :login, mutation: Mutations::Users::Login, description: 'Logs in a User and returns a JWT Token'
     field :sign_up, mutation: Mutations::Users::SignUp, description: 'Creates a new User using the provided info'
+    field :update_user, mutation: Mutations::Users::UpdateUser, description: 'Updates the current user using the provided info'
 
     # Image
     field :create_image, mutation: Mutations::Images::CreateImage, description: 'Creates an Image Entity using the provided information'
@@ -14,5 +15,8 @@ module Types
 
     # Tag
     field :create_tag, mutation: Mutations::Tags::CreateTag, description: 'Creates a Tag given the provided name'
+
+    # Purchases
+    field :create_purchase, mutation: Mutations::Purchases::CreatePurchase, description: 'Creates a Purchase for the current user of the provided Image'
   end
 end

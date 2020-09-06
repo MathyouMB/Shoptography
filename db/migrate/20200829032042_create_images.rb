@@ -5,6 +5,7 @@ class CreateImages < ActiveRecord::Migration[6.0]
       t.string(:title)
       t.text(:description)
       t.float(:price)
+      t.boolean(:private)
 
       t.timestamps
     end

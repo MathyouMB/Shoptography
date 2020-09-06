@@ -1,5 +1,12 @@
 # Represents the Image entity and its associated data
 class Image < ApplicationRecord
+  # Scope
+  scope :public_images, -> { where(private: false) }
+
+  # Validations
+  validates :title, presence: true
+  validates :price, presence: true
+
   # Relations
   belongs_to :user
   has_many :image_tags, dependent: :delete_all

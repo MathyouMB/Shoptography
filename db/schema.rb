@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_29_040646) do
+ActiveRecord::Schema.define(version: 2020_09_06_173814) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -48,10 +48,23 @@ ActiveRecord::Schema.define(version: 2020_08_29_040646) do
     t.string('title')
     t.text('description')
     t.float('price')
+    t.boolean('private')
     t.datetime('created_at', precision: 6, null: false)
     t.datetime('updated_at', precision: 6, null: false)
     t.bigint('user_id')
     t.index(['user_id'], name: 'index_images_on_user_id')
+  end
+
+  create_table 'purchases', force: :cascade do |t|
+    t.string('title')
+    t.text('description')
+    t.float('cost')
+    t.datetime('created_at', precision: 6, null: false)
+    t.datetime('updated_at', precision: 6, null: false)
+    t.bigint('user_id')
+    t.bigint('merchant_id')
+    t.index(['merchant_id'], name: 'index_purchases_on_merchant_id')
+    t.index(['user_id'], name: 'index_purchases_on_user_id')
   end
 
   create_table 'tags', force: :cascade do |t|
@@ -75,4 +88,5 @@ ActiveRecord::Schema.define(version: 2020_08_29_040646) do
   add_foreign_key 'image_tags', 'images'
   add_foreign_key 'image_tags', 'tags'
   add_foreign_key 'images', 'users'
+  add_foreign_key 'purchases', 'users'
 end

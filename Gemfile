@@ -35,6 +35,7 @@ gem 'graphql', '1.8.13'
 gem 'graphql-errors'
 gem 'graphql-rails_logger'
 gem 'graphql-batch'
+gem 'graphiql-rails'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
