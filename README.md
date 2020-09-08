@@ -92,6 +92,20 @@ If you would like to run this app using docker, you will need to verify that the
 The host name in `config/database.yml` should match the name of the postgres container ('db') and the host name of the redis_store should match the name of the redis container ('redis').
 
 ```ruby
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+  #host: db #uncomment this if using docker-compose
+
+development:
+  <<: *default
+  database: image_repository_development
+  username: YOUR_USERNAME
+  password: YOUR_PASSWORD
+```
+
+```ruby
 db:
     image: postgres:12-alpine
     environment: 
@@ -111,7 +125,7 @@ docker-compose up
 
 <img src="/assets/documentation/altair_logo.png" width="200px">
 
-For using this API, I strongly recommend <a href="https://altair.sirmuel.design/">Altair GraphQL Client</a>. Altair is capable of seamlessly using files as GraphQL parameters and can dynamicaly generate the body of your GraphQL requests.
+For using this API, I strongly recommend <a href="https://altair.sirmuel.design/">Altair GraphQL Client</a>. Altair is capable of seamlessly using files as GraphQL parameters and can dynamically generate the body of your GraphQL requests.
 
 The GraphQL API can be utilized using POST `http://localhost:3000/graphql`.
 
@@ -243,7 +257,7 @@ A mutation that updates the current user using the provided information
 
 All available GraphQL operations have error handling to prevent any internal errors from being exposed to Users.
 
-To verify a user's identity, The API uses JWT tokens. A user can receive their JWT Token by using the `login` mutation.
+To verify a user's identity, the API uses JWT tokens. A user can receive their JWT Token by using the `login` mutation.
 
 Additionally, all user passwords are hashed using Bcrypt.
 
