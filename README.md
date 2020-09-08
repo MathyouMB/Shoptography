@@ -5,7 +5,7 @@
 
 **Shoptography is an E-commerce platform that lets users sell and purchase stock photography.**
 
-The Following project is my <a href="https://docs.google.com/document/d/1ZKRywXQLZWOqVOHC4JkF3LqdpO3Llpfk_CkZPR8bjak/edit">Shopify Winter 2021 Developer Challenge Submission.</a>
+The following project is my <a href="https://docs.google.com/document/d/1ZKRywXQLZWOqVOHC4JkF3LqdpO3Llpfk_CkZPR8bjak/edit">Shopify Winter 2021 Developer Challenge Submission.</a>
 
 ## 📋 Table of Contents
 - [Features](#-features)
@@ -34,7 +34,7 @@ For my solution to the Developer Intern Challenge, I have created an API for a t
 * Users cannot update or delete images they did not upload
 * Users can search for images to purchase 
 * Users can purchase images
-* Users can set private viewing permissinons on their images
+* Users can set private viewing permissions on their images
 * Users can add tags to their images to improve their search visibility
 
 
@@ -42,7 +42,7 @@ For my solution to the Developer Intern Challenge, I have created an API for a t
 
 <img src="/assets/documentation/setup_logos.png" width="400px">
 
-To setup and configure this application you can either install the various dependencies as described below or use the provided dockerfile and `docker-compose.yml`. If you plan to use the Docker, skip to [Docker Setup](#-docker-setup).
+To set up and configure this application, you can either install the various dependencies as described below or use the provided dockerfile and `docker-compose.yml`. If you plan to use the Docker, skip to [Docker Setup](#-docker-setup).
 
 This project was built using Ruby on Rails and will require you to have <a href="https://www.ruby-lang.org/en/news/2019/04/17/ruby-2-6-3-released/">Ruby 2.6.3</a> and <a href="https://weblog.rubyonrails.org/2020/6/17/Rails-6-0-3-2-has-been-released/">Ruby on Rails 6.0.3.2</a>. Additionally you will need PostgreSQL and Redis installed.
 
@@ -131,7 +131,7 @@ The GraphQL API can be utilized using POST `http://localhost:3000/graphql`.
 
 Many of the GraphQL operations will require you to be logged in and submit a valid JWT Token via the `Authentication` header. You can retrieve your JWT Token using the `login` mutation.
 
-You can login using the credentials:
+You can log in using the credentials:
 * **Email**: tester@email.com
 * **Password**: tester
 
@@ -149,7 +149,7 @@ If you do not have a valid JWT token in the Authentication header on specific op
 
 <img src="/assets/documentation/schema_diagram.png" width="600px">
 
-**NOTE:** To store Images, I utilized Rails Active Storage. Active Storage uses polymorphic associations. These are represented above using dotted lines.
+**NOTE:** To store images, I utilized Rails Active Storage. Active Storage uses polymorphic associations. These are represented above using dotted lines.
 
 * **User**: Represents someone who Interacts with the API
   * Relations
@@ -160,20 +160,20 @@ If you do not have a valid JWT token in the Authentication header on specific op
     * **email (string)**: Represents the user's email
     * **first_name (string)**: Represents the user's first name
     * **last_name (string)**: Represents the user's last name
-    * **password_digest (string)**: Represents hashed version of the user's password
+    * **password_digest (string)**: Represents the hashed version of the user's password
 
-* **Image**: Represents an uploaded and purchasable Image
+* **Image**: Represents an uploaded and purchasable image
   * Relations
     * **Belongs To**: User (uploader/creator)
     * **Has Many**: Tags (Through ImageTags Join)
     * **Has One**: Active Storage Attachment (Image File)
   * Attributes
     * **description (text)**: Represents the image's description.
-    * **price (float)**: Represents how much it costs for a User to purchase
+    * **price (float)**: Represents how much it costs for a user to purchase
     * **private (boolean)**: Represents whether the image is viewable by all users or only its creator
-    * **title (string)**: Represents the images's title
+    * **title (string)**: Represents the image's title
 
-* **ImageTag**: Join between Image and Tag for associating specific Images with a Tags that represent their characteristics
+* **ImageTag**: Join between mage and Tag for associating specific images with a tags that represent their characteristics
   * Relations
     * **Belongs To**: Image
     * **Belongs To**: Tag
@@ -185,7 +185,7 @@ If you do not have a valid JWT token in the Authentication header on specific op
   * Attributes
     * **name (string)**: Represents the characteristic of a given tag
 
-* **Purchase**: Represents a purchased image. When an Image is purchased, it's data is copied into a Purchase model to preserve the title, description, and most importantly the cost of the image at the time it was purchased. Users are allowed to freely update their existing uploaded images, and therefore this model was neccesary to ensure Users who have made purchases are not affected by Merchants making updates.
+* **Purchase**: Represents a purchased image. When an image is purchased, it's data is copied into a purchase model to preserve the title, description, and most importantly the cost of the image at the time it was purchased. Users are allowed to freely update their existing uploaded images, and therefore this model was necessary to ensure users who have made purchases are not affected by Merchants making updates.
   * Relations
     * **Belongs To**: User (The User who Purchased the Image)
     * **Belongs To**: Merchant (The User who uploaded and sold this Image)
@@ -199,7 +199,7 @@ If you do not have a valid JWT token in the Authentication header on specific op
 
 <img src="/assets/documentation/graphql_logo.png" width="200px">
 
-The Shoptography API is Built using GraphQL.
+The Shoptography API is built using GraphQL.
 
 ### API Design
 
@@ -207,7 +207,7 @@ In designing this GraphQL API, I choose to follow the <a href="https://github.co
 
 One of the Shopify API Patterns team's GraphQL guidelines is to <a href="https://youtu.be/2It9NofBWYg?t=329">Not expose implementation detail in your API design</a>. To follow this guideline, I abstracted out the ImageTags join table from Shoptography's domain model.
 
-Additionally, to improve the performance of my API and remove multiple unnecessary round trips to datastores from nested GraphQL queries (<a href="https://engineering.shopify.com/blogs/engineering/solving-the-n-1-problem-for-graphql-through-batching/">the N+1 query problem</a>), I have have defined batch loaders using Shopify's <a href="https://github.com/Shopify/graphql-batch">GraphQL-Batch gem</a>. 
+Additionally, to improve the performance of my API and remove multiple unnecessary round trips to datastores from nested GraphQL queries (<a href="https://engineering.shopify.com/blogs/engineering/solving-the-n-1-problem-for-graphql-through-batching/">the N+1 query problem</a>), I have defined batch loaders using Shopify's <a href="https://github.com/Shopify/graphql-batch">GraphQL-Batch gem</a>. 
 
 <img src="/assets/documentation/erd_diagram.png" width="600px">
 
@@ -217,7 +217,7 @@ Additionally, to improve the performance of my API and remove multiple unnecessa
 A query that returns the information of a specified image.
 
 **imageSearch:**<br>
-A query that returns the results of a text based search for related images. The search algorithm is explained [here](#Search).
+A query that returns the results of a text-based search for related images. The search algorithm is explained [here](#-search).
 
 **profile:**<br>
 A query that returns the profile of the currently logged in user.
@@ -255,7 +255,7 @@ A mutation that updates the current user using the provided information
 
 ## 🔐 Security
 
-All available GraphQL operations have error handling to prevent any internal errors from being exposed to Users.
+All available GraphQL operations have error handling to prevent any internal errors from being exposed to users.
 
 To verify a user's identity, the API uses JWT tokens. A user can receive their JWT Token by using the `login` mutation.
 
@@ -263,7 +263,7 @@ Additionally, all user passwords are hashed using Bcrypt.
 
 ## 🔍 Search
 
-Users can search use the <b>imageSearch</b> GraphQL query to do a text based search over all <b>public</b> in the database.
+Users can search using the <b>imageSearch</b> GraphQL query to do a text-based search over all <b>public</b> images in the database.
 
 ```ruby
 def resolve(search_input:)
@@ -287,14 +287,14 @@ def search_string
 end
 ```
 
-`search_input` is the aggregation of a image's title, description, and tags. To prevent having to do this aggregation several times, `search_input` is cached in redis.
+`search_input` is the aggregation of an image's title, description, and tags. To prevent having to do this aggregation several times, `search_input` is cached in redis.
 
 
 ## 🧹 Linting
 
 <img src="/assets/documentation/rubocop_logo.png" width="200px">
 
-For this project I utilized RuboCop to enforce many of the guidelines outlined in the community <a href="https://rubystyle.guide/">Ruby Style Guide</a>. Additionally, I utilized the Shopify RuboCop config to implement the Shopify Ruby Style guidelines described <a href="https://shopify.github.io/ruby-style-guide/">here.</a>
+For this project, I utilized RuboCop to enforce many guidelines outlined in the community <a href="https://rubystyle.guide/">Ruby Style Guide</a>. Additionally, I utilized the Shopify RuboCop config to implement the Shopify Ruby Style guidelines described <a href="https://shopify.github.io/ruby-style-guide/">here.</a>
 
 ```ruby
 require: 
@@ -308,13 +308,13 @@ inherit_gem:
 
 ## ✏️ Documentation
 
-In addition to this readme, I have documented this project through inline comments and through GraphQL View Documentation.
+In addition to this readme, I have documented this project through inline comments and GraphQL client documentation.
 
 <img src="/assets/documentation/screen_docs.png" width="500px">
 
 ## 🧪 Testing
 
-Several rspec tests have been written for this project including tests for:
+Several rspec tests have been written for this project, including tests for:
 * Model Validation
 * GraphQL Queries
 * GraphQL mutations
