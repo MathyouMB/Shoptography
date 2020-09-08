@@ -9,9 +9,10 @@ module Mutations
       field :user, Types::UserType, null: true
 
       def resolve(email: nil, password: nil)
-        return GraphQL::ExecutionError.new('error: no user with that email.') unless (user = User.find_by(email: email))
+        user = ::User.find_by(email: email)
+        return GraphQL::ExecutionError.new('ERROR: no user with that email') if user.nil?
 
-        return unless user.authenticate(password) # ~bcrypt
+        return GraphQL::ExecutionError.new('ERROR: Incorrect Password') unless user.authenticate(password) # ~bcrypt
 
         user_id = { id: user.id }
         jwt = JWT.encode(user_id, Rails.application.secrets.secret_key_base.byteslice(0..31))

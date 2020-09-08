@@ -12,14 +12,15 @@ module Mutations
 
       # add password validation error handling
       def resolve(email:, password:, password_confirmation:, first_name:, last_name:)
-        return GraphQL::ExecutionError.new('error: password and password confirmation are not the same') unless password == password_confirmation
-        return GraphQL::ExecutionError.new('error: email already used by other user') unless User.where(email: email).empty?
+        return GraphQL::ExecutionError.new('ERROR: password and password confirmation are not the same') unless password == password_confirmation
+        return GraphQL::ExecutionError.new('ERROR: email already used by other user') unless User.where(email: email).empty?
 
         User.create(
           first_name: first_name,
           last_name: last_name,
           email: email,
-          password: password
+          password: password,
+          balance: 10000.00
         )
       end
     end

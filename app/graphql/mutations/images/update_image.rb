@@ -14,7 +14,7 @@ module Mutations
         user = context[:current_user]
         return GraphQL::ExecutionError.new('ERROR: Not logged in or missing token') if user.nil?
 
-        image_search = Image.find_by(id: id)
+        image_search = ::Image.find_by(id: id)
 
         if image_search.present?
           if image_search.user == user

@@ -17,7 +17,7 @@ module Mutations
 
         return GraphQL::ExecutionError.new('ERROR: User cannot afford this purchase') if user.balance < image.price
 
-        purchase = Purchase.create(
+        purchase = ::Purchase.create(
           title: image.title,
           description: image.description,
           user_id: user.id,

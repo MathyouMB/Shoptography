@@ -10,11 +10,7 @@ module Types
     field :create_image, mutation: Mutations::Images::CreateImage, description: 'Creates an Image Entity using the provided information'
     field :update_image, mutation: Mutations::Images::UpdateImage, description: 'Updates the Image of the provided id'
     field :delete_image, mutation: Mutations::Images::DeleteImage, description: 'Deletes the Image of the provided id'
-    field :add_image_tag_by_id, mutation: Mutations::Images::AddImageTagById, description: 'Adds a Tag to a given Image using the provided tag id'
     field :add_image_tag, mutation: Mutations::Images::AddImageTag, description: 'Adds a Tag to a given Image using the provided tag name'
-
-    # Tag
-    field :create_tag, mutation: Mutations::Tags::CreateTag, description: 'Creates a Tag given the provided name'
 
     # Purchases
     field :create_purchase, mutation: Mutations::Purchases::CreatePurchase, description: 'Creates a Purchase for the current user of the provided Image'

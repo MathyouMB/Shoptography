@@ -14,15 +14,15 @@ The Following project is my <a href="https://docs.google.com/document/d/1ZKRywXQ
   - [Docker](#-docker-setup)
   - [API](#api-setup)
 - [Schema](#schema)
-- [API](#API)
+- [API](#%EF%B8%8F-api)
   - [Design](#api-design)
   - [Queries](#queries)
   - [Mutations](#mutations)
-- [Security](#security)
-- [Search](#Search)
-- [Linting](#linting)
-- [Documentation](#linting)
-- [Testing](#testing)
+- [Security](#-security)
+- [Search](#-search)
+- [Linting](#-linting)
+- [Documentation](#%EF%B8%8F-documentation)
+- [Testing](#-testing)
 
 ## 💻 Features
 
@@ -40,9 +40,9 @@ For my solution to the Developer Intern Challenge, I have created an API for a t
 
 ## 🛠️ Setup
 
-[ RAILS + GraphQL + Postgres + Redis + Docker]
+<img src="/assets/documentation/setup_logos.png" width="400px">
 
-To setup and configure this application you can either install the various dependencies as described below or use the provided dockerfile and `docker-compose.yml`. If you plan to use the Docker, skip to [Docker Setup](#docker-setup).
+To setup and configure this application you can either install the various dependencies as described below or use the provided dockerfile and `docker-compose.yml`. If you plan to use the Docker, skip to [Docker Setup](#-docker-setup).
 
 This project was built using Ruby on Rails and will require you to have <a href="https://www.ruby-lang.org/en/news/2019/04/17/ruby-2-6-3-released/">Ruby 2.6.3</a> and <a href="https://weblog.rubyonrails.org/2020/6/17/Rails-6-0-3-2-has-been-released/">Ruby on Rails 6.0.3.2</a>. Additionally you will need PostgreSQL and Redis installed.
 
@@ -87,7 +87,7 @@ After you've properly configured PostgreSQL and Redis run the following commands
 
 <img src="/assets/documentation/docker_logo.png" width="200px">
 
-If you would like to run this app using docker, you will need to verify that the database host name, username, and password in `config/database.yml` match the information found in `docker-compose.yml` and that the host of the `redis_store` in `config/environments/development.rb` is titled 'redis'. 
+If you would like to run this app using docker, you will need to verify that the database host name, username, and password in `config/database.yml` match the information found in `docker-compose.yml` 'db' container and that the `redis_store` information in `config/environments/development.rb` matches the information in the 'redis' container. 
 
 The host name in `config/database.yml` should match the name of the postgres container ('db') and the host name of the redis_store should match the name of the redis container ('redis').
 
@@ -111,9 +111,31 @@ docker-compose up
 
 <img src="/assets/documentation/altair_logo.png" width="200px">
 
-## 🗄️ Schema
+For using this API, I strongly recommend <a href="https://altair.sirmuel.design/">Altair GraphQL Client</a>. Altair is capable of seamlessly using files as GraphQL parameters and can dynamicaly generate the body of your GraphQL requests.
 
-[ IMG SCHEMA ]
+The GraphQL API can be utilized using POST `http://localhost:3000/graphql`.
+
+Many of the GraphQL operations will require you to be logged in and submit a valid JWT Token via the `Authentication` header. You can retrieve your JWT Token using the `login` mutation.
+
+You can login using the credentials:
+* **Email**: tester@email.com
+* **Password**: tester
+
+<img src="/assets/documentation/screen_login.png" width="600px">
+
+Add the `Authentication` Header:
+
+<img src="/assets/documentation/screen_auth.png" width="600px">
+
+If you do not have a valid JWT token in the Authentication header on specific operations, you will receive this error:
+
+<img src="/assets/documentation/screen_fail.png" width="600px">
+
+## Schema
+
+<img src="/assets/documentation/schema_diagram.png" width="600px">
+
+**NOTE:** To store Images, I utilized Rails Active Storage. Active Storage uses polymorphic associations. These are represented above using dotted lines.
 
 * **User**: Represents someone who Interacts with the API
   * Relations
@@ -167,20 +189,30 @@ The Shoptography API is Built using GraphQL.
 
 ### API Design
 
-[API ERD]
-
 In designing this GraphQL API, I choose to follow the <a href="https://github.com/Shopify/graphql-design-tutorial/blob/master/TUTORIAL.md">guidelines</a> created by the Shopify API Patterns Team (<a href="https://youtu.be/2It9NofBWYg">Described in this 2018 GraphQL Conference talk by Leane Shapton</a>).
 
 One of the Shopify API Patterns team's GraphQL guidelines is to <a href="https://youtu.be/2It9NofBWYg?t=329">Not expose implementation detail in your API design</a>. To follow this guideline, I abstracted out the ImageTags join table from Shoptography's domain model.
 
 Additionally, to improve the performance of my API and remove multiple unnecessary round trips to datastores from nested GraphQL queries (<a href="https://engineering.shopify.com/blogs/engineering/solving-the-n-1-problem-for-graphql-through-batching/">the N+1 query problem</a>), I have have defined batch loaders using Shopify's <a href="https://github.com/Shopify/graphql-batch">GraphQL-Batch gem</a>. 
 
+<img src="/assets/documentation/erd_diagram.png" width="600px">
+
 ### Queries
+
+**image:**<br>
+A query that returns the information of a specified image.
+
 **imageSearch:**<br>
 A query that returns the results of a text based search for related images. The search algorithm is explained [here](#Search).
 
 **profile:**<br>
 A query that returns the profile of the currently logged in user.
+
+**purchase:**<br>
+A query that returns the information of a specified purchase.
+
+**user:**<br>
+A query that returns the profile of the specified user.
 
 ### Mutations
 **addImageTag:**<br>
@@ -209,7 +241,40 @@ A mutation that updates the current user using the provided information
 
 ## 🔐 Security
 
+All available GraphQL operations have error handling to prevent any internal errors from being exposed to Users.
+
+To verify a user's identity, The API uses JWT tokens. A user can receive their JWT Token by using the `login` mutation.
+
+Additionally, all user passwords are hashed using Bcrypt.
+
 ## 🔍 Search
+
+Users can search use the <b>imageSearch</b> GraphQL query to do a text based search over all <b>public</b> in the database.
+
+```ruby
+def resolve(search_input:)
+    images = ::Image.public_images
+    results = []
+    images.each do |i|
+      results << i if i.search_string.downcase.include?(search_input.downcase)
+    end
+    results
+ end
+```
+
+The search shown above utilizes a method called `search_string` to determine what should be returned based on the given `search_input`.
+
+```ruby
+def search_string
+    Rails.cache.fetch([cache_key, __method__]) do
+      s = title + ' ' + description + ' '
+      s + tags.map(&:name).join(', ')
+    end
+end
+```
+
+`search_input` is the aggregation of a image's title, description, and tags. To prevent having to do this aggregation several times, `search_input` is cached in redis.
+
 
 ## 🧹 Linting
 
@@ -229,15 +294,14 @@ inherit_gem:
 
 ## ✏️ Documentation
 
-In addition to this readme, I have documented this project through inline comments and the API through GraphQL View Documentation.
+In addition to this readme, I have documented this project through inline comments and through GraphQL View Documentation.
 
-[GRAPHQL EDITOR DOCUMENTATION IMAGE]
+<img src="/assets/documentation/screen_docs.png" width="500px">
 
 ## 🧪 Testing
 
 Several rspec tests have been written for this project including tests for:
 * Model Validation
-* GraphQL Types
 * GraphQL Queries
 * GraphQL mutations
 
@@ -247,4 +311,4 @@ Simply run:
 rspec
 ```
 
-to run the test suite.
+to run all provided tests.

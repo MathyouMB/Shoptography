@@ -8,10 +8,10 @@ user = User.create(
 )
 
 user2 = User.create(
-  first_name: 'John',
-  last_name: 'Smith',
-  email: 'john.smith@email.com',
-  password: '1234',
+  first_name: 'First',
+  last_name: 'Last',
+  email: 'tester@email.com',
+  password: 'tester',
   balance: 10000.00,
 )
 

@@ -14,7 +14,7 @@ module Mutations
         user = context[:current_user]
         return GraphQL::ExecutionError.new('ERROR: Not logged in or missing token') if user.nil?
 
-        Image.create!(
+        ::Image.create!(
           title: title,
           description: description,
           price: price,

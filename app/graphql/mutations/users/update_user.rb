@@ -9,7 +9,7 @@ module Mutations
 
       type Types::UserType
 
-      def resolve(email:, password:, first_name:, last_name:)
+      def resolve(email: nil, password: nil, first_name: nil, last_name: nil)
         user = context[:current_user]
         return GraphQL::ExecutionError.new('ERROR: Not logged in or missing token') if user.nil?
 

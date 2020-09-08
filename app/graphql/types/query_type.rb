@@ -5,6 +5,8 @@ module Types
     field :user, resolver: Queries::User
     field :users, resolver: Queries::Users
     field :tags, resolver: Queries::Tags
+    field :image, resolver: Queries::Image
     field :image_search, resolver: Queries::ImageSearch
+    field :purchase, resolver: Queries::Purchase
   end
 end

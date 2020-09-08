@@ -10,7 +10,7 @@ module Mutations
       def resolve(image_id: nil, tag: nil)
         user = context[:current_user]
         return GraphQL::ExecutionError.new('ERROR: Not logged in or missing token') if user.nil?
-        return GraphQL::ExecutionError.new('ERROR: User is not owner of this Image') unless Image.find_by(id: image_id).user_id == user.id
+        return GraphQL::ExecutionError.new('ERROR: User is not owner of this Image') unless ::Image.find_by(id: image_id).user_id == user.id
 
         tag_search = Tag.find_by(name: tag)
 
