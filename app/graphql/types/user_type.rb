@@ -8,6 +8,7 @@ module Types
     field :lastName, String, null: false
     field :email, String, null: false
     field :balance, Float, null: false
+    field :imageCount, Integer, null: false
     field :images, [Types::ImageType], null: false
     field :purchases, [Types::PurchaseType], null: false
   end

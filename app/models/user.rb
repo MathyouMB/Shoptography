@@ -12,4 +12,11 @@ class User < ApplicationRecord
   # Relations
   has_many :images
   has_many :purchases
+
+  # Methods
+  def image_count
+    Rails.cache.fetch([cache_key, __method__]) do
+      self.images.count
+    end
+  end
 end
