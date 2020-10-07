@@ -17,25 +17,26 @@ module Mutations
 
         return GraphQL::ExecutionError.new('ERROR: User cannot afford this purchase') if user.balance < image.price
 
-        purchase = ::Purchase.create(
-          title: image.title,
-          description: image.description,
-          user_id: user.id,
-          merchant_id: image.user.id,
-          cost: image.price
-        )
+        ActiveRecord::Base.transaction do
+          purchase = ::Purchase.create!(
+            title: image.title,
+            description: image.description,
+            user_id: user.id,
+            merchant_id: image.user.id,
+            cost: image.price
+          )
 
-        purchase.attached_image.attach(image.attached_image.attachment.blob)
-        purchase.save
+          purchase.attached_image.attach(image.attached_image.attachment.blob)
+          purchase.save
 
-        raise GraphQL::ExecutionError, purchase.errors.full_messages.join(', ') unless purchase.errors.empty?
-
-        user.balance -= image.price
-        image.user.balance += image.price
-        user.save
-        image.user.save
+          user.update!(balance: user.balance - image.price)
+          image.user.update!(balance: image.user.balance + image.price)
+        end
 
         'Succesfully purchased image.'
+
+      rescue ActiveRecord::RecordInvalid
+        GraphQL::ExecutionError.new('ERROR: Invalid operation. Transaction was not successfully completed')
       end
     end
   end
