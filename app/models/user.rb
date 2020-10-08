@@ -16,7 +16,7 @@ class User < ApplicationRecord
   # Methods
   def image_count
     Rails.cache.fetch([cache_key, __method__]) do
-      self.images.count
+      images.count
     end
   end
 end

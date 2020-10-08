@@ -12,9 +12,7 @@ module Mutations
 
         image = Image.find(image_id)
         return GraphQL::ExecutionError.new('ERROR: Requested Image does not exist') if image.nil? || image.private
-
         return GraphQL::ExecutionError.new('ERROR: User cannot purchase their own Image') if user == image.user
-
         return GraphQL::ExecutionError.new('ERROR: User cannot afford this purchase') if user.balance < image.price
 
         ActiveRecord::Base.transaction do
