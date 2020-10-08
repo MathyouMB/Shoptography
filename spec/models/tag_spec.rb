@@ -18,7 +18,7 @@ RSpec.describe(Tag, type: :model) do
       end
     end
 
-    context 'When two tags have the same email' do
+    context 'When two tags have the same name' do
       let(:tag_copy) { create(:tag, name: tag.name) }
 
       before do

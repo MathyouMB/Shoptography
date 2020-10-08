@@ -17,7 +17,7 @@ module Mutations
         user.password = password if password.present?
         user.first_name = first_name if first_name.present?
         user.last_name = last_name if last_name.present?
-        user.save
+        user.save!
 
         raise GraphQL::ExecutionError, user.errors.full_messages.join(', ') unless user.errors.empty?
 

@@ -15,13 +15,17 @@ module Mutations
         return GraphQL::ExecutionError.new('ERROR: password and password confirmation are not the same') unless password == password_confirmation
         return GraphQL::ExecutionError.new('ERROR: email already used by other user') unless User.where(email: email).empty?
 
-        User.create(
+        user = User.create!(
           first_name: first_name,
           last_name: last_name,
           email: email,
           password: password,
           balance: 10000.00
         )
+
+        raise GraphQL::ExecutionError, user.errors.full_messages.join(', ') unless user.errors.empty?
+
+        user
       end
     end
   end
